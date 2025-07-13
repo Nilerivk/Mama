@@ -1,0 +1,158 @@
+<!DOCtYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sobre Animado con Fondo</title>
+  <style>
+    body {
+      background: #3effef;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Aquí está el cuadro de fondo del sobre - #aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */
+    .envelope-container {
+      background-color: #13b7a1; /* Puedes cambiar este color por el que quieras */
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 50, 0.2);
+      display: inline-block;
+      user-select: none;
+    }
+
+    .envelope {
+      width: 200px;
+      cursor: pointer;
+      transition: transform 2s ease, opacity 2s ease;
+      display: block;
+    }
+
+    .rotate-disappear {
+      animation: spinFade 2s forwards;
+    }
+
+    @keyframes spinFade {
+      0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(720deg) scale(0);
+        opacity: 0;
+      }
+    }
+
+    #openBtn {
+      margin-top: 20px;
+      padding: 12px 28px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      background-color: #b9a86c;
+      color: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 8px rgba(185,168,108,0.7);
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    #openBtn:hover {
+      background-color: #a49455;
+    }
+
+    .message {
+      display: none;
+      max-width: 300px;
+      text-align: center;
+      margin-top: 30px;
+      color: #4a4a4a;
+      user-select: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Contenedor con fondo color (#aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa) -->
+  <div class="envelope-container">
+    <img src="Sobre-cerrado.png" alt="Sobre cerrado" class="envelope" id="envelope" />
+  </div>
+
+  <button id="openBtn" aria-label="Abrir el sobre">Abrir</button>
+
+  <div class="message" id="message" role="alert" aria-live="polite">
+    <h1>Felicitats!</h1>
+    <h2>Val per 5 entrades per l'escape room de Roomanji</h2>
+    <img src="images.jpeg" alt="Imagen personalizada" />
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const openBtn = document.getElementById('openBtn');
+    const message = document.getElementById('message');
+
+    openBtn.addEventListener('click', () => {
+      envelope.classList.add('rotate-disappear');
+      openBtn.style.display = 'none';
+
+      setTimeout(() => {
+        envelope.style.display = 'none';
+        message.classList.add('show');
+        launchConfetti();
+      }, 2000);
+    });
+
+    function launchConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.top = '-10px';
+        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        confetti.style.animation = `fall ${3 + Math.random() * 2}s linear forwards`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+      }
+    }
+
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes fall {
+        to {
+          transform: translateY(${window.innerHeight + 50}px) rotate(720deg);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+</html>
